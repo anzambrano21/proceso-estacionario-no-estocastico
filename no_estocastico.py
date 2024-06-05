@@ -1,8 +1,7 @@
 import pandas as pd
 import numpy as np
-
 import statsmodels.api as sm
-
+#clace de los calculos para la predicion 
 class DivisasEURUS:
     def __init__(self):
         self.coti = {'dif': [], 'cierre': [], 'fech': [], "media":[], "varianza":[], 'cierre_normalized':[]}

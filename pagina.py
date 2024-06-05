@@ -2,12 +2,13 @@ import flet
 from flet import Column,Row,Container,margin
 from no_estocastico import DivisasEURUS
 import pandas as pd
-import matplotlib.pyplot as plt
+
 Style_Frame:dict={
     "expand": True,
     "border_radius":10,
     "padding":20
 }
+#clase dedicada para la grafica
 class grafica:
     def __init__(self):
         
@@ -115,7 +116,7 @@ class pagina:
     def __init__(self,page:flet.Page):
         self.calculos=DivisasEURUS()
         self.page=page
-        self.page.window_height=1000
+        self.page.window_height=700
         self.page.window_width=985
         #caselar el cambio de tamaño
         self.page.window_resizable=False
@@ -141,6 +142,7 @@ class pagina:
         self.grafica=grafica()
         self.componentes()
         self.page.update()
+    #inicio de los metodos de los botones
     def remover(self,e):
         del self.tabla.rows[self.id]
         self.calculos.deleteRegistro(self.id)      
@@ -250,9 +252,8 @@ class pagina:
         
         self.grafica.content.data_series=data_1
         self.page.update()
-
-        
-
+    #Fin de los metodos de los botones
+    #inicio de la estructura de la pagina
     def componentes(self):
         self.page.add(Column([
             flet.Text("Proceso Estocástico no Estacionario en Divisas Euro/US", text_align=flet.TextAlign.CENTER)]))
