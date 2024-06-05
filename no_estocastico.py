@@ -31,6 +31,7 @@ class DivisasEURUS:
         order = (int(p), int(d), int(q))
         model = sm.tsa.ARIMA(self.Ce['dif'], order=order)
         self.results = model.fit()
+        self.forecast()
 
     def forecast(self, steps=10):
         if self.results:
