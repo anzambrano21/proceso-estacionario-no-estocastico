@@ -104,7 +104,7 @@ class grafica:
                 labels_size=32,
             ),
             tooltip_bgcolor=flet.colors.with_opacity(0.8,flet.colors.BLACK),
-            min_y=-10,
+            min_y=-1,
             max_y=10,
             min_x=0,
             max_x=30,
@@ -227,16 +227,17 @@ class pagina:
         
         self.page.update()   
     def Operar(self,e):
+        pasos=len(self.calculos.coti["cierre"])
         self.calculos.fitARIMA(self.pe.value,self.de.value,self.qu.value)
         self.calculos.add_linear_trend()
-        forecast= self.calculos.forecast(steps=10)
-
+        forecast= self.calculos.forecast(steps=pasos)
+        print(forecast)
         puntos=[]
         for i in range(len(self.calculos.coti["cierre"])):
 
-            puntos.append(flet.LineChartDataPoint(i, self.calculos.coti["cierre"][i]/1000))
+            puntos.append(flet.LineChartDataPoint(i, self.calculos.coti["cierre"][i]/100))
         for valor in forecast :
-            puntos.append(flet.LineChartDataPoint(len(puntos)-1, valor/1000)   )                 
+            puntos.append(flet.LineChartDataPoint(len(puntos)-1, valor/1000))                 
         print(len(puntos))
         data_1=[flet.LineChartData(
                 data_points=puntos,
