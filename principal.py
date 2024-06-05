@@ -2,4 +2,4 @@ from pagina import pagina
 import flet
 
 
-flet.app(pagina)
+flet.app(pagina)    

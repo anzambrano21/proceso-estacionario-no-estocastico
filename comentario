@@ -1,0 +1,14 @@
+
+'''
+        fecha_inicial = pd.to_datetime(self.calculos.coti["fech"][0])  # Cambia la fecha según tus necesidades
+        # Genera fechas futuras
+        fechas_futuras = pd.date_range(start=fecha_inicial, periods=10, freq="D")
+        plt.plot(self.calculos.coti["fech"], self.calculos.coti["cierre"], label="Valores observados")
+        plt.plot(fechas_futuras, forecast, label="Predicciones", linestyle="--")
+        plt.xlabel("Fecha")
+        plt.ylabel("Valor de cierre")
+        plt.title("Predicciones de EUR/USD utilizando ARIMA")
+        plt.legend()
+        plt.grid(True)
+        plt.show()
+        print( forecast)'''

@@ -235,7 +235,8 @@ class pagina:
         for i in range(len(self.calculos.coti["cierre"])):
 
             puntos.append(flet.LineChartDataPoint(i, self.calculos.coti["cierre"][i]/1000))
-        for valor in 
+        for valor in forecast :
+            puntos.append(flet.LineChartDataPoint(len(puntos)-1, valor/1000)   )                 
         print(len(puntos))
         data_1=[flet.LineChartData(
                 data_points=puntos,
