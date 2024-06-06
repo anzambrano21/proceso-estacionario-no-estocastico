@@ -125,9 +125,9 @@ class pagina:
         #componentes
         self.fecha=flet.TextField(label="Fecha")
         self.cierre=flet.TextField(label="Cierre")
-        self.pe=flet.TextField(label="P")
-        self.de=flet.TextField(label="D")
-        self.qu=flet.TextField(label="Q")
+        self.pe=flet.TextField(label="P",value=1)
+        self.de=flet.TextField(label="D",value=1)
+        self.qu=flet.TextField(label="Q",value=1)
         self.botonAgre=flet.ElevatedButton(text="Agragar",on_click=self.agregarvalor,visible=True)
         self.edit=flet.ElevatedButton(text="Editar Valor",bgcolor="orange",color="white",on_click=self.editSave,visible=False)
         self.delet=flet.ElevatedButton(text="Delet",bgcolor="red",color="white",on_click=self.remover,visible=False)
@@ -177,7 +177,8 @@ class pagina:
         try:
             num=float(self.cierre.value)
             fecha=pd.to_datetime(self.fecha.value,format='%d-%m-%Y')
-        except:
+            fecha=fecha.strftime('%d-%m-%Y')
+        except :
             
             self.page.snack_bar = flet.SnackBar(
                 flet.Text("Valor invalido"),
@@ -192,8 +193,8 @@ class pagina:
         self.Cal.visible=True
         self.edit.visible=False
         self.delet.visible=False
-        self.calculos.setCierre(num)
-        self.calculos.setFecha(fecha)
+        self.calculos.setCierre(self.id,num)
+        self.calculos.setFecha(self.id,fecha)
         self.fecha.value=""
         self.cierre.value=""
         self.page.update()
@@ -202,7 +203,8 @@ class pagina:
         num=None
         try:
             num=float(self.cierre.value)
-            fecha=pd.to_datetime(self.fecha.value)
+            fecha=pd.to_datetime(self.fecha.value,format='%d-%m-%Y')
+            fecha=fecha.strftime('%d-%m-%Y')
         except:
             
             self.page.snack_bar = flet.SnackBar(
@@ -230,28 +232,29 @@ class pagina:
         self.page.update()   
     def Operar(self,e):
         pasos=len(self.calculos.coti["cierre"])
-        self.calculos.fitARIMA(self.pe.value,self.de.value,self.qu.value)
-        self.calculos.add_linear_trend()
-        forecast= self.calculos.forecast(steps=pasos)
-        print(forecast)
-        puntos=[]
-        for i in range(len(self.calculos.coti["cierre"])):
+        if (pasos>0):
+            self.calculos.fitARIMA(self.pe.value,self.de.value,self.qu.value)
+            self.calculos.add_linear_trend()
+            forecast= self.calculos.forecast(steps=pasos)
+            print(forecast)
+            puntos=[]
+            for i in range(len(self.calculos.coti["cierre"])):
 
-            puntos.append(flet.LineChartDataPoint(i, self.calculos.coti["cierre"][i]/100))
-        for valor in forecast :
-            puntos.append(flet.LineChartDataPoint(len(puntos)-1, valor/1000))                 
-        print(len(puntos))
-        data_1=[flet.LineChartData(
-                data_points=puntos,
-                stroke_width=5,
-                color=flet.colors.CYAN,
-                curved=False,
-                stroke_cap_round=True,
-                gradient=flet.LinearGradient([flet.colors.CYAN,flet.colors.WHITE]) 
-            )]
+                puntos.append(flet.LineChartDataPoint(i, self.calculos.coti["cierre"][i]/100))
+            for valor in forecast :
+                puntos.append(flet.LineChartDataPoint(len(puntos)-1, valor/1000))                 
+            print(len(puntos))
+            data_1=[flet.LineChartData(
+                    data_points=puntos,
+                    stroke_width=5,
+                    color=flet.colors.CYAN,
+                    curved=False,
+                    stroke_cap_round=True,
+                    gradient=flet.LinearGradient([flet.colors.CYAN,flet.colors.WHITE]) 
+                )]
         
-        self.grafica.content.data_series=data_1
-        self.page.update()
+            self.grafica.content.data_series=data_1
+            self.page.update()
     #Fin de los metodos de los botones
     #inicio de la estructura de la pagina
     def componentes(self):

@@ -1,12 +1,12 @@
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
+from datetime import datetime
 #clace de los calculos para la predicion 
 class DivisasEURUS:
     def __init__(self):
         self.coti = {'dif': [], 'cierre': [], 'fech': [], "media":[], "varianza":[], 'cierre_normalized':[]}
         self.results = None
-
     def appendCierre(self, cier):
         self.coti["cierre"].append(cier)
         self.coti["dif"].append(np.nan)  # Inicializar la diferencia como NaN
@@ -26,9 +26,17 @@ class DivisasEURUS:
     def deleteRegistro(self, id):
         self.coti["cierre"].pop(id)
         self.coti["fech"].pop(id)
+        self.coti["dif"].pop(id)  # Inicializar la diferencia como NaN
+        self.coti["media"].pop(id)
+        self.coti["varianza"].pop(id)
+        self.coti["cierre_normalized"].pop(id)
 
     def fitARIMA(self, p, d, q):
+        
+        # Ordenar por la columna 'cierre'
+       
         self.Ce = pd.DataFrame(self.coti)
+        self.Ce.sort_values(by='cierre', inplace=True)
         # Normaliza los datos de cierre
         self.Ce['cierre_normalized'] = (self.Ce['cierre'] - self.Ce['cierre'].mean()) / self.Ce['cierre'].std()
         self.Ce['media'] = self.Ce['cierre'].mean()
